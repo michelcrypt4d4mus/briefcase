@@ -592,10 +592,25 @@ class Subprocess(Tool):
             # re-raise to exit as "Aborted by user"
             raise
         finally:
-            self.cleanup(label, popen_process)
+            # If the output streamer thread is still alive, give it a chance to
+            # finish. This is a common occurrence when the stop function isn't
+            # directly tied to the streaming popen (e.g., on macOS/iOS/Android
+            # where the log is separate to the process that is being monitored
+            # for a stop condition; the process can exit, but the logs take a
+            # few seconds to finish streaming).
             streamer_deadline = time.time() + 3
             while output_streamer.is_alive() and time.time() < streamer_deadline:
                 time.sleep(0.1)
+
+            # Clean up the process that we are streaming
+            self.cleanup(label, popen_process)
+
+            # Wait a little longer to ensure the cleanup has finished.
+            streamer_deadline = time.time() + 3
+            while output_streamer.is_alive() and time.time() < streamer_deadline:
+                time.sleep(0.1)
+
+            # If it *still* hasn't terminated, we likely have a problem.
             if output_streamer.is_alive():
                 self.tools.logger.error(
                     "Log stream hasn't terminated; log output may be corrupted."

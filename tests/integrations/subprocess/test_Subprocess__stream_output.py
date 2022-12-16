@@ -101,10 +101,12 @@ def test_stuck_streamer(mock_sub, streaming_process, monkeypatch, capsys):
     """Following a KeyboardInterrupt, output streaming returns even if the
     output streamer becomes stuck."""
 
-    # Mock time.time() to return times that monotonically increase by 1s
-    # every time it is invoked. This allows us to simulate the progress of
-    # time much faster than the actual calls to time.sleep() would.
-    mock_time = mock.MagicMock(side_effect=range(1000, 1005))
+    # Mock time.time() to return times that monotonically increase by 1s every
+    # time it is invoked. This allows us to simulate the progress of time much
+    # faster than the actual calls to time.sleep() would. There will be 8 ticks;
+    # 4 waiting for the streamer to exit before calling terminate, and another 4
+    # after calling terminate.
+    mock_time = mock.MagicMock(side_effect=range(1000, 1008))
     monkeypatch.setattr(time, "time", mock_time)
 
     # Flag for the mock streamer to exit and prevent it

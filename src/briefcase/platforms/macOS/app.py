@@ -116,6 +116,10 @@ class macOSAppBuildCommand(
         # signed to be able to execute on M1 hardware - even if it's only an
         # ad-hoc signing identity. Apply an ad-hoc signing identity to the
         # app bundle.
+        if app.skip_signing:
+            self.logger.info(f"Not signing application because 'skip_signing' set to True...")
+            return
+
         self.logger.info("Ad-hoc signing app...", prefix=app.app_name)
         self.sign_app(app=app, identity=SigningIdentity())
 

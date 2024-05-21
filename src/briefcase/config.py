@@ -1,4 +1,5 @@
 import copy
+import json
 import keyword
 import re
 import sys
@@ -147,6 +148,9 @@ class BaseConfig:
         for attr, value in kwargs.items():
             setattr(self, attr, value)
 
+    def to_fancy_string(self) -> str:
+        return f"{self.__repr__()}\n{json.dumps(vars(self), indent=4)}"
+
 
 class GlobalConfig(BaseConfig):
     def __init__(
@@ -202,6 +206,7 @@ class AppConfig(BaseConfig):
         supported=True,
         long_description=None,
         console_app=False,
+        skip_signing=False,
         **kwargs,
     ):
         super().__init__(**kwargs)
@@ -230,6 +235,7 @@ class AppConfig(BaseConfig):
         self.supported = supported
         self.long_description = long_description
         self.console_app = console_app
+        self.skip_signing = skip_signing
 
         if not is_valid_app_name(self.app_name):
             raise BriefcaseConfigError(

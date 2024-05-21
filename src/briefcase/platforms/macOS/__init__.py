@@ -929,7 +929,7 @@ password:
         with self.input.wait_bar("Installing license..."):
             license_file = self.base_path / "LICENSE"
             if license_file.is_file():
-                (installer_path / "resources").mkdir(exist_ok=True)
+                (installer_path / "resources").mkdir(exist_ok=True, parents=True)
                 self.tools.shutil.copy(
                     license_file,
                     installer_path / "resources/LICENSE",

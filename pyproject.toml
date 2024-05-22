@@ -2,7 +2,7 @@
 requires = [
     # keep versions in sync with automation/pyproject.toml
     "setuptools==69.5.1",
-    "setuptools_scm==8.0.4",
+    "setuptools_scm==8.1.0",
 ]
 build-backend = "setuptools.build_meta"
 
@@ -100,14 +100,14 @@ dev = [
     "coverage-conditional-plugin == 0.9.0",
     # Pre-commit 3.6.0 deprecated support for Python 3.8
     "pre-commit == 3.5.0 ; python_version < '3.9'",
-    "pre-commit == 3.7.0 ; python_version >= '3.9'",
+    "pre-commit == 3.7.1 ; python_version >= '3.9'",
     "pytest == 8.1.2",
     "pytest-xdist == 3.6.1",
     "setuptools_scm == 8.0.4",
     "tox == 4.15.0",
 ]
 docs = [
-    "furo == 2024.4.27",
+    "furo == 2024.5.6",
     "pyenchant == 3.2.2",
     # Sphinx 7.2 deprecated support for Python 3.8
     "sphinx == 7.1.2 ; python_version < '3.9'",

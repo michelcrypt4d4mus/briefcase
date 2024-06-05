@@ -727,6 +727,8 @@ class CreateCommand(BaseCommand):
         # location. The stub binaries all disable PYC generation, to avoid
         # corrupting any app bundle signatures.
         paths_to_remove.append("**/__pycache__")
+        print(f"Paths to remove: {paths_to_remove}")
+        print(f"Bundle path: {self.bundle_path(app)}")
 
         with self.input.wait_bar("Removing unneeded app bundle content..."):
             for glob in paths_to_remove:
